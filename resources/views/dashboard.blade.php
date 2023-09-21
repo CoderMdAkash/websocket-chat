@@ -171,7 +171,7 @@
             background-color: #82ccdd;
             padding: 10px;
             position: relative;
-            min-width: 68px
+            min-width: 75px
         }
         .msg_cotainer_send{
             margin-top: auto;
@@ -195,6 +195,7 @@
             bottom: -15px;
             color: rgba(255,255,255,0.5);
             font-size: 10px;
+            min-width: 75px;
         }
         .msg_head{
             position: relative;
@@ -335,7 +336,6 @@
                                             <img src="https://i.pinimg.com/564x/5d/69/42/5d6942c6dff12bd3f960eb30c5fdd0f9.jpg" class="rounded-circle user_img">
                                         @endif
                                         <span class="online_icon offline offline-status-{{$user->id}}"></span>
-                                        {{-- <span class="online_icon offline"></span> --}}
                                     </div>
                                     <div class="user_info">
                                         <span>{{$user->name}}</span>
@@ -384,14 +384,14 @@
                     </div>
 
                     <div class="card-footer">
-                        <form action="">
+                        <form id="send_btn">
                             <div class="input-group">
                                 <div class="input-group-append">
                                     <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                                 </div>
-                                <textarea id="chat_input" name="chat_input" class="form-control type_msg" placeholder="Type your message..."></textarea>
+                                <input type="text" placeholder="Type your message..." id="chat_input" name="chat_input" class="form-control type_msg">
                                 <div class="input-group-append">
-                                    <button id="send_btn" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+                                    <button type="submit" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
                                 </div>
                             </div>
                         </form>
@@ -419,7 +419,7 @@ var reciever_id;
 
 $(document).ready(function(){
 
-    $('#send_btn').click(function(e){
+    $('#send_btn').submit(function(e){
         e.preventDefault();
         let mgs = $("#chat_input").val();
         if(mgs != ""){
@@ -435,11 +435,12 @@ $(document).ready(function(){
                 },
                 success:function(e){
                     console.log(e);
-                    userMgsShow(sender_id);
+                    userMgsShow(sender_id, reciever_id);
+                    $("#chat_input").val('');
                 },
                 error:function(e){
                     console.log(e);
-                    alert("Validation Error!");
+                    alert("Server Error!");
                 }
             });
 
@@ -468,19 +469,17 @@ $(document).ready(function(){
 
         $("#user-chat-body").html('<div class="jumping-dots-loader"> <span></span> <span></span> <span></span> </div><div class="moving-gradient"></div>');
 
-        // setTimeout(() => {
-            userMgsShow(sender_id);
-        // }, 1000);
+        userMgsShow(sender_id, reciever_id);
 
     });
 
 
 });
 
-function userMgsShow(sender_id){
+function userMgsShow(sender_id, reciever_id){
     if(sender_id){
         $.ajax({
-            url: "{{url('user-message-show')}}/"+sender_id,
+            url: "{{url('user-message-show')}}/"+sender_id+'/'+reciever_id,
             method: "POST",
             data: {_token: "{{ csrf_token() }}",},
             dataType: "html",
@@ -505,7 +504,7 @@ function userMgsShow(sender_id){
 function userMgsShow1(sender_id1){
 
     if(sender_id1 == reciever_id){
-        userMgsShow(sender_id);
+        userMgsShow(sender_id, reciever_id);
     }
 }
 

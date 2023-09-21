@@ -6,13 +6,13 @@
                 <span class="msg_time_send">{{ $mgs->updated_at->diffForHumans() }}</span>
             </div>
             <div class="img_cont_msg">
-                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                <img src="{{ getUserIdByImage($user_id) }}" class="rounded-circle user_img_msg">
             </div>
         </div>
     @else
         <div class="d-flex justify-content-start mb-4">
             <div class="img_cont_msg">
-                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img_msg">
+                <img src="{{ getUserIdByImage($user_id) }}" class="rounded-circle user_img_msg">
             </div>
             <div class="msg_cotainer">
                 {{$mgs->message}}

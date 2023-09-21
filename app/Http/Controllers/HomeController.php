@@ -28,7 +28,7 @@ class HomeController extends Controller
     }
 
     public function dashboard(){
-        $data['users'] = User::whereNotIN('id', [auth()->user()->id])->limit(100)->orderByDesc('id')->get();
+        $data['users'] = User::whereNotIN('id', [auth()->user()->id])->limit(100)->get();
 
         return view('dashboard', $data);
     }

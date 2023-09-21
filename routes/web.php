@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::get('dashboard', [HomeController::class, 'dashboard']);
 
 Route::post('button/clicked', [ButtonClickedController::class, 'index']);
-Route::post('user-message-show/{recieverId}', [ButtonClickedController::class, 'userMgsShow']);
+Route::post('user-message-show/{senderId}/{recieverId}', [ButtonClickedController::class, 'userMgsShow']);
 
 Auth::routes();
 

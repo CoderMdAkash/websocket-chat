@@ -34,10 +34,21 @@ final class ButtonClickedController extends Controller
         }
     }
 
-    public function userMgsShow($recieverId){
-        $data['user_id'] = auth()->user()->id;
-        $data['messages'] = Chat::where('sender_id', auth()->user()->id)
-            ->orWhere('reciever_id', $recieverId)
+    public function userMgsShow($sender_id, $reciever_id){
+
+        $data['user_id'] = Auth::id(); 
+        $senderId = intval($sender_id);
+        $recieverId = intval($reciever_id);
+        
+
+        $data['messages'] = Chat::where(function($query) use ($recieverId, $senderId){
+                $query->where('sender_id', '=', $senderId)
+                        ->orWhere('sender_id', '=', $recieverId);
+            })
+            ->where(function($query) use ($recieverId, $senderId){
+                $query->where('reciever_id', '=', $senderId)
+                        ->orWhere('reciever_id', '=', $recieverId);
+            })
             ->limit(30)
             ->get();
 
